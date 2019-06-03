@@ -1,0 +1,29 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import linear_model
+
+data = pd.read_csv("carsample.csv")
+
+print(data.head(10))
+print(data.describe())
+
+reg = linear_model.LinearRegression()
+reg.fit(data[['Engine']],data.co2)
+
+plt.xlabel('Engine size')
+plt.ylabel('Co2 emission')
+plt.scatter(data.Engine,data.co2)
+plt.plot(data.Engine,reg.predict(data[['Engine']]),color='blue')
+plt.savefig('scatter.png')
+
+print('gradient =',reg.coef_,'y intercept =',reg.intercept_)
+
+en_size = int(input('what engine size do you want to predict?'))
+print(reg.predict([[en_size]]))
+
+new_d = pd.read_csv('predict_this.csv')
+print(new_d.head())
+
+p = reg.predict(new_d)
+print(p)
